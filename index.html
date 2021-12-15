@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A simple example</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <style>
+    #panorama {
+        width: 80vw;
+        height: 60vh;
+        margin: 0 auto;
+    }
+
+    .custom-hotspot {
+        height: 50px;
+        width: 50px;
+        background: #f00;
+    }
+    div.custom-tooltip span {
+        visibility: hidden;
+        position: absolute;
+        border-radius: 3px;
+        background-color: #fff;
+        color: #000;
+        text-align: center;
+        max-width: 200px;
+        padding: 5px 10px;
+        margin-left: -220px;
+        cursor: default;
+    }
+    div.custom-tooltip:hover span{
+        visibility: visible;
+    }
+    div.custom-tooltip:hover span:after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-width: 10px;
+        border-style: solid;
+        border-color: #fff transparent transparent transparent;
+        bottom: -20px;
+        left: -10px;
+        margin: 0 50%;
+    }
+    </style>
+</head>
+<body>
+
+<div id="panorama"></div>
+<script>
+pannellum.viewer('panorama', {
+    "default": {
+          "firstScene": "scene-1",
+          "author": "Matthew Petroff",
+          "sceneFadeDuration": 1000
+    },
+    "type": "equirectangular",
+    "panorama": "https://sw-test-360-v1.s3.us-west-1.amazonaws.com/PIC_20211213_151047_20211213174424.jpg",
+    "autoLoad": true,
+    "title": "360 Demo Image Viewer",
+    "author": "Snappy Workflow, LLC",
+    "compass": true,
+    "northOffset": 247.5,
+    // "pitch": 2.3,
+    // "yaw": -135.4,
+    // "hfov": 120,
+    "scenes": {
+        "scene-1": {
+            "title": "Mason Circle",
+            "hfov": 0,
+            "pitch": 5,
+            "yaw": 90,
+            "type": "equirectangular",
+            "panorama": "https://sw-test-360-v1.s3.us-west-1.amazonaws.com/PIC_20211213_151047_20211213174424.jpg",
+            "hotSpots": [
+                {
+                    "pitch": 0,
+                    "yaw": 100,
+                    "type": "scene",
+                    // "text": "Spring House or Dairy",
+                    "sceneId": "scene-2"
+                }
+            ]
+        },
+
+        "scene-2": {
+            "title": "Spring House or Dairy",
+            "hfov": 0,
+            "yaw": 0,
+            "type": "equirectangular",
+            "panorama": "https://sw-test-360-v1.s3.us-west-1.amazonaws.com/PIC_20211213_151047_20211213174424.jpg",
+            "hotSpots": [
+                {
+                    "pitch": -0.6,
+                    "yaw": 37.1,
+                    "type": "scene",
+                    "text": "Mason Circle",
+                    "sceneId": "scene-1",
+                    "targetYaw": -23,
+                    "targetPitch": 2
+                }
+            ]
+        }
+    }
+
+    
+});
+
+// Hot spot creation function
+function hotspot(hotSpotDiv, args) {
+    hotSpotDiv.classList.add('custom-tooltip');
+    var span = document.createElement('span');
+    span.innerHTML = args;
+    hotSpotDiv.appendChild(span);
+    span.style.width = span.scrollWidth - 20 + 'px';
+    span.style.marginLeft = -(span.scrollWidth - hotSpotDiv.offsetWidth) / 2 + 'px';
+    span.style.marginTop = -span.scrollHeight - 12 + 'px';
+}
+</script>
+
+</body>
+</html>
